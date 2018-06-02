@@ -10,7 +10,7 @@ export default class Card extends Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-4'>
-                            <img className='cardimg' src={this.props.img} style={{ width: 100 }} />
+                            <img alt={this.props.id} className='cardimg' src={this.props.img} style={{ width: 100 }} />
                         </div>
                         <div className='col-6'>
                             <span>name : {this.props.Pokename}</span>

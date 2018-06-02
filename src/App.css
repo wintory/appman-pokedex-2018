@@ -1,5 +1,6 @@
 div.card{
-    padding: 3%
+    padding: 3%;
+    background-color: #f3f4f7
 }
 
 .cardimg{
@@ -7,13 +8,13 @@ div.card{
 }
 
 .App{
-    width: 860px;
+    width: 847px;
     height: 720px;
     overflow: scroll;
 }
 
 .footer{
-    width: 98%;
+ 
     height: 78px;
     background-color: #ec5656
 }
@@ -25,5 +26,26 @@ nav.header{
 
 .textheader{
     margin-left: 40%;
-    font-size: 2rem
+    font-size: 2rem;
+    margin-top: 2%;
+}
+
+.btnadd{
+    border-radius: 100%;
+    border-color: transparent;
+    background-color: #ec5656;
+    font-size: 2rem;
+    height: 80px;
+    width: 80px;
+    margin-top: -20px;
+    color: aliceblue
+}
+
+.element {
+    background-image: url(./search.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 8%;
+    background-origin: content-box;
+    height: 60px;
 }

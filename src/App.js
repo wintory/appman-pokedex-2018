@@ -3,19 +3,21 @@ import './App.css'
 import axios from 'axios'
 import Card from './Card'
 
-const COLORS = {
-  Psychic: "#f8a5c2",
-  Fighting: "#f0932b",
-  Fairy: "#c44569",
-  Normal: "#f6e58d",
-  Grass: "#badc58",
-  Metal: "#95afc0",
-  Water: "#3dc1d3",
-  Lightning: "#f9ca24",
-  Darkness: "#574b90",
-  Colorless: "#FFF",
-  Fire: "#eb4d4b"
-}
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    width: 800,
+    height: 600,
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
+
 
 
 class App extends Component {
@@ -29,9 +31,20 @@ class App extends Component {
       pokeid: [],
       searchPokemon: '',
       pokemonName: '',
-      searchbox: ''
+      searchbox: '',
+      modalIsOpen: false
     }
   }
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+    this.getFromSearch(this.state.searchPokemon)
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  }
+
 
   componentDidMount() {
     this.getAllPokemon()
@@ -66,6 +79,7 @@ class App extends Component {
     this.setState({
       searchPokemon: message
     })
+    this.getFromSearch(this.state.searchPokemon)
   }
 
   getAllPokemon = () => {
@@ -81,18 +95,16 @@ class App extends Component {
   }
 
   getFromSearch = (val) => {
-    axios.get('http://localhost:3030/api/cards')
-      .then(function (response) {
-        if (response.data.cards) {
-          return response.data.cards.filter((data) => { })
-        }
-      }).then((data) => this.setState({ allPokemon: data }))
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (this.state.searchPokemon === '') {
+      this.setState({ pokemonResult: this.state.allPokemon })
+    } else {
+      // this.state.allPokemon.filter((data) => { if (data.name.equal(val) === true) { this.setState({ searchPokemon: data }) } })
+    }
+
   }
 
   render() {
+    console.log(this.state.pokemonResult);
 
 
     return (
@@ -113,23 +125,33 @@ class App extends Component {
             })}
           </div>
         </div>
-        <footer className='footer'>
-          <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <footer className='footer col-12'>
+          <button type="button" className="col-2 offset-5 btnadd" onClick={this.openModal}>
             +
 </button>
         </footer>
-        <input type='text' placeholder='pokemon name' onChange={(e) => this.searchbox(e.target.value)} />
-        {this.state.allPokemon.map((data, i) => {
-          if (this.state.pokeid.indexOf(data.id) === -1) {
-            return (
-              <div className='col-6'>
-                <Card img={data.imageUrl} status='false' weakness={data.weaknesses} attacks={data.attacks} addCard={this.addCard} id={data.id} hp={data.hp} Pokename={data.name} key={i + data.id} />
-              </div>
-            )
-          }
-        })}
 
-      </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <input type='text' placeholder='pokemon name' className='col-12 element' onChange={(e) => this.searchbox(e.target.value)} />
+          {this.state.pokemonResult.map((data, i) => {
+            if (this.state.pokeid.indexOf(data.id) === -1) {
+              return (
+                <div className='col-12'>
+                  <br />
+                  <Card img={data.imageUrl} status='false' weakness={data.weaknesses} attacks={data.attacks} addCard={this.addCard} id={data.id} hp={data.hp} Pokename={data.name} key={i + data.id} />
+                </div>
+              )
+            }
+          })}
+        </Modal>
+
+      </div >
     )
   }
 }
