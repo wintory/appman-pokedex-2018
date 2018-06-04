@@ -33,7 +33,7 @@ export default class Card extends Component {
         const happy = this.getHappy(hp, str, weak, damage)
 
         return (
-            <div className='card' onClick={() => this.props.showButton()}>
+            <div className='card' >
                 <div className='row body'>
                     <div className='col-4'>
                         <img alt={this.props.id} className='cardimg' src={this.props.img} style={{ width: '100%' }} />
@@ -69,12 +69,12 @@ export default class Card extends Component {
                                 </div>
                             </div>
                         </div>
-                        {Object.keys(happy).map(i => <img src={happyimg} style={{ width: '15%', marginLeft: '3%' }} />)}
+                        {Object.keys(happy).map(i => <img key={i} src={happyimg} style={{ width: '15%', marginLeft: '3%' }} />)}
                         <br />
                     </div>
                     {this.props.button}
                     <div className='col-2 '>
-                        {this.props.status === 'false' ? <button className=' addbutton' onClick={() => this.props.addCard(this.props.id)}>
+                        {this.props.status === 'add' ? <button className=' addbutton' onClick={() => this.props.addCard(this.props.id)}>
                             Add
                         </button> : <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => this.props.deleteCard(this.props.id)}>
                                 <span aria-hidden="true">&times;</span>

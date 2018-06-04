@@ -8,7 +8,7 @@ const { cards } = require('./../mock/cards.json')
 app.use(cors())
 
 app.get('/api/cards', (req, res) => {
-  const { name, type, limit = 20 } = req.query
+  const { name, type, limit = 100 } = req.query
 
   if (_.every([name, type], item => item === undefined)) {
     return res.json({ cards: cards.slice(0, limit) })

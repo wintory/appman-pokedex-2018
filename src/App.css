@@ -48,6 +48,7 @@ nav.header{
     background-size: 8%;
     background-origin: content-box;
     height: 60px;
+    margin-left: 4%;
 }
 
 .hidden{
@@ -64,8 +65,7 @@ nav.header{
 
 .pokemonName{
     font-family: 'Gaegu', cursive;
-    font-size: 2rem;
-    
+    font-size: 2ch
 }
 
 .body{
