@@ -1,22 +1,9 @@
 import React, { Component } from 'react'
 import './App.css'
+import 'antd/dist/antd.css'
 import axios from 'axios'
 import Card from './Card'
-
-import Modal from 'react-modal';
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    width: 800,
-    height: 600,
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
-};
+import { Modal, Button } from 'antd'
 
 
 
@@ -32,19 +19,23 @@ class App extends Component {
       searchPokemon: '',
       pokemonName: '',
       searchbox: '',
-      modalIsOpen: false
+      modalVisible: false,
+      showButton: false
     }
   }
 
+  showButton = () => {
+    this.setState = ({ showButton: true })
+  }
+
   openModal = () => {
-    this.setState({ modalIsOpen: true });
-    this.getFromSearch(this.state.searchPokemon)
+    this.getFromSearch()
+    this.setState({ modalVisible: true })
   }
 
   closeModal = () => {
-    this.setState({ modalIsOpen: false });
+    this.setState({ modalVisible: false })
   }
-
 
   componentDidMount() {
     this.getAllPokemon()
@@ -57,15 +48,13 @@ class App extends Component {
   }
 
   addCard = (id) => {
-
-    this.state.allPokemon.filter((pokemon) => {
+    this.state.allPokemon.map((pokemon) => {
       if (pokemon.id === id) {
-        return this.setState({ pokedex: [...this.state.pokedex, pokemon], pokeid: [...this.state.pokeid, id] })
+        console.log(this);
+        this.setState({ pokedex: [...this.state.pokedex, pokemon], pokeid: [...this.state.pokeid, id] })
       }
+      return id
     })
-
-    console.log(this.state.pokedex);
-
   }
 
   deleteCard = (id) => {
@@ -83,7 +72,7 @@ class App extends Component {
   }
 
   getAllPokemon = () => {
-    axios.get('http://localhost:3030/api/cards')
+    axios.get('http://localhost:3030/api/cards?limit=100')
       .then(function (response) {
         if (response.status === 200) {
           return response.data.cards
@@ -98,17 +87,15 @@ class App extends Component {
     if (this.state.searchPokemon === '') {
       this.setState({ pokemonResult: this.state.allPokemon })
     } else {
-      // this.state.allPokemon.filter((data) => { if (data.name.equal(val) === true) { this.setState({ searchPokemon: data }) } })
+      this.state.allPokemon.filter((data) => { if (data.name.equal(val) === true) { this.setState({ searchPokemon: data }) } })
     }
 
   }
 
   render() {
-    console.log(this.state.pokemonResult);
-
 
     return (
-      <div className="App">
+      <div className="App body">
         <div className='container'>
           <div className='row'>
             <nav className='header'>
@@ -118,8 +105,8 @@ class App extends Component {
             </div>
             {this.state.pokedex.map((data, i) => {
               return (
-                <div className='col-6'>
-                  <Card img={data.imageUrl} status='true' weakness={data.weaknesses} attacks={data.attacks} deleteCard={this.deleteCard} id={data.id} hp={data.hp} Pokename={data.name} key={i} />
+                <div className='col-6' key={i}>
+                  <Card img={data.imageUrl} status='true' showButton={this.showButton} weakness={data.weaknesses} attacks={data.attacks} deleteCard={this.deleteCard} id={data.id} hp={data.hp} Pokename={data.name} key={i} />
                 </div>
               )
             })}
@@ -132,19 +119,20 @@ class App extends Component {
         </footer>
 
         <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
+          title="Add Pokemon"
+          visible={this.state.modalVisible}
+          onOk={this.closeModal}
+          onCancel={this.closeModal}
+          width={800}
+          height={600}
         >
           <input type='text' placeholder='pokemon name' className='col-12 element' onChange={(e) => this.searchbox(e.target.value)} />
           {this.state.pokemonResult.map((data, i) => {
             if (this.state.pokeid.indexOf(data.id) === -1) {
               return (
-                <div className='col-12'>
+                <div className='col-12' key={i}>
                   <br />
-                  <Card img={data.imageUrl} status='false' weakness={data.weaknesses} attacks={data.attacks} addCard={this.addCard} id={data.id} hp={data.hp} Pokename={data.name} key={i + data.id} />
+                  <Card showButton={this.showButton} button={this.state.showButton} img={data.imageUrl} status='false' weakness={data.weaknesses} attacks={data.attacks} addCard={this.addCard} id={data.id} hp={data.hp} Pokename={data.name} />
                 </div>
               )
             }

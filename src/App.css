@@ -49,3 +49,25 @@ nav.header{
     background-origin: content-box;
     height: 60px;
 }
+
+.hidden{
+    visibility: hidden
+}
+
+.addbutton{
+    background-color: transparent;
+    color: #dc7777;
+    font-size: 1.5rem;
+    border:none;
+    margin-left: 30%;
+}
+
+.pokemonName{
+    font-family: 'Gaegu', cursive;
+    font-size: 2rem;
+    
+}
+
+.body{
+    font-family: 'Atma', cursive,bold;
+}
