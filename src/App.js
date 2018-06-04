@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   closeModal = () => {
-    this.setState({ modalVisible: false })
+    this.setState({ modalVisible: false, searchPokemon: '' })
   }
 
   componentDidMount() {
@@ -73,7 +73,7 @@ class App extends Component {
   getFromSearch = (val) => {
     this.setState({ pokemonResult: this.state.allPokemon })
     if (val === '') {
-      this.setState({ pokemonResult: this.state.allPokemon })
+      this.setState({ pokemonResult: this.state.allPokemon, searchPokemon: val })
     } else {
       this.setState({
         pokemonResult: this.state.allPokemon.filter(re => {
@@ -81,10 +81,10 @@ class App extends Component {
           if (name.indexOf(val.toLowerCase()) !== -1) {
             return re
           }
-        })
+        }),
+        searchPokemon: val
       })
     }
-
   }
 
   render() {
@@ -94,9 +94,10 @@ class App extends Component {
       <div className="App body">
         <div className='container'>
           <div className='row'>
-            <nav className='header'>
+            <div className='header fix'>
               <p className='textheader'>My Pokedex</p>
-            </nav>
+            </div>
+            <br /><br /><br /><br /><br />
             <div className='col-12'>
             </div>
             {this.state.pokedex.map((data, i) => {
@@ -110,11 +111,11 @@ class App extends Component {
         </div>
         <br />
         <br />
-        <footer className='footer col-12'>
-          <button type="button" className="col-2 offset-5 btnadd" onClick={this.openModal}>
+        <div id="footer" style={{ backgroundColor: '#ec5656', position: 'absolute', bottom: 0, height: 100, left: 0, right: 0, overflow: 'hidden' }}>
+          <button type="button" className="col-2 offset-5 btnadd" onClick={this.openModal} style={{ borderRadius: 100 }} >
             +
 </button>
-        </footer>
+        </div>
 
         <Modal
           visible={this.state.modalVisible}
@@ -126,7 +127,7 @@ class App extends Component {
             null, null,
           ]}
         >
-          <input type='text' placeholder='pokemon name' className='col-11 element' onChange={(e) => this.getFromSearch(e.target.value)} />
+          <input type='text' value={this.state.searchPokemon} placeholder='pokemon name' className='col-11 element' onChange={(e) => this.getFromSearch(e.target.value)} />
           {this.state.pokemonResult.map((data, i) => {
             if (this.state.pokeid.indexOf(data.id) === -1) {
               return (

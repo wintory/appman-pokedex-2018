@@ -9,7 +9,7 @@ div.card{
 
 .App{
     width: 847px;
-    height: 720px;
+    height: 700px;
     overflow: scroll;
 }
 
@@ -19,9 +19,9 @@ div.card{
     background-color: #ec5656
 }
 
-nav.header{
-        width: 98%;
-        height: 78px;
+.header{
+        width: 100%;
+        height: 100px;
 }
 
 .textheader{
@@ -37,7 +37,7 @@ nav.header{
     font-size: 2rem;
     height: 80px;
     width: 80px;
-    margin-top: -20px;
+    margin-bottom: 50%;
     color: aliceblue
 }
 
@@ -70,4 +70,11 @@ nav.header{
 
 .body{
     font-family: 'Atma', cursive,bold;
+}
+
+.fix{
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    background-color: white
 }
